@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="LeCo: Learning to Leverage Compliance. A policy–admittance learning framework for robotic insertion, evaluated on four real connector-assembly tasks.">
+  <meta name="theme-color" content="#176c62">
+  <meta property="og:title" content="LeCo — Learning to Leverage Compliance">
+  <meta property="og:description" content="A policy–admittance learning framework for effective, lower-load robotic insertion.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rtnow.github.io/leco/">
+  <title>LeCo | Learning to Leverage Compliance</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles/site.css">
+  <script defer src="scripts/config.js"></script>
+  <script defer src="scripts/traces.js"></script>
+  <script defer src="scripts/site.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <nav class="navigation" aria-label="Main navigation">
+    <a class="wordmark" href="#main"><span class="brand-symbol" aria-hidden="true">∿</span> LeCo</a>
+    <div><a href="#evaluation">Evaluation</a><a href="#method">Method</a><a href="#results">Results</a></div>
+  </nav>
+  <main id="main">
+    <header class="hero container">
+      <p class="eyebrow">LeCo · Leverage Compliance</p>
+      <h1>Learning to <span>Leverage Compliance</span></h1>
+      <p class="paper-subtitle">A Policy–Admittance Learning Framework<br class="desktop-break"> for Robotic Insertion</p>
+      <p class="authors"><span>Chongren Wang<sup>*</sup></span><span>Minghe Li<sup>*</sup></span><span>Honghua Dai<sup>†</sup></span><span>Zhicheng Lin</span><span>Shiyang Wei</span><span>Xiaokui Yue</span></p>
+      <p class="affiliation">School of Astronautics · National Key Laboratory of Aerospace Flight Dynamics<br>Northwestern Polytechnical University</p>
+      <p class="author-notes"><sup>*</sup> Equal contribution &nbsp; <sup>†</sup> Corresponding author</p>
+      <div class="hero-links">
+        <a class="button primary" href="#evaluation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 9 6-9 6z"/></svg>Explore the tasks</a>
+      </div>
+      <p class="hero-summary">Learning to work with compliance for effective insertion with reduced contact loads.</p>
+      <div class="task-gallery" aria-label="Four real connector-assembly tasks">
+        <a class="task-card" href="#evaluation" data-select-task="aviation"><span class="task-number">01</span><img src="assets/images/aviation.png" alt="Aviation connector held by the robot gripper" width="384" height="606"><span>Aviation connector</span></a>
+        <a class="task-card" href="#evaluation" data-select-task="anderson-head"><span class="task-number">02</span><img src="assets/images/anderson-head.png" alt="Anderson connector head insertion setup" width="372" height="606"><span>Anderson head</span></a>
+        <a class="task-card" href="#evaluation" data-select-task="anderson-side"><span class="task-number">03</span><img src="assets/images/anderson-side.png" alt="Anderson connector side interlocking setup" width="390" height="606"><span>Anderson side</span></a>
+        <a class="task-card" href="#evaluation" data-select-task="atx"><span class="task-number">04</span><img src="assets/images/atx.png" alt="ATX 20+4-pin connector housing assembly setup" width="366" height="606"><span>ATX 20+4-pin</span></a>
+      </div>
+    </header>
+
+    <section class="evaluation-section section" id="evaluation" aria-labelledby="evaluation-heading">
+      <div class="container">
+        <div class="section-heading"><p class="eyebrow">See the interaction</p><h2 id="evaluation-heading">Four tasks. One cooperative framework.</h2><p>Explore the assembly tasks and their contact interaction over time.</p></div>
+        <section class="preview-tools" id="preview-tools" hidden aria-labelledby="preview-heading">
+          <div><h3 id="preview-heading">Local media preview</h3><p>Choose a video and the measurements from the same trial. Files stay in this browser.</p></div>
+          <div class="preview-inputs">
+            <label>Evaluation video<input type="file" id="video-file" accept="video/*"></label>
+            <label>Force / torque CSV<input type="file" id="trace-file" accept=".csv,text/csv"></label>
+            <label>Trace time at video start (s)<input type="number" id="time-offset" value="0" step="0.01"></label>
+          </div>
+          <p class="preview-hint">CSV columns: <code>time_s,fx,fy,fz,tx,ty,tz</code>. Force in N; torque in N·m. An aligned time column can also be supplied with <code>force_n,torque_nm</code>.</p>
+          <p id="preview-status" role="status" aria-live="polite"></p>
+        </section>
+        <div class="task-tabs" role="tablist" aria-label="Assembly task">
+          <button id="tab-aviation" role="tab" aria-selected="true" aria-controls="task-panel" data-task="aviation">Aviation connector</button>
+          <button id="tab-anderson-head" role="tab" aria-selected="false" aria-controls="task-panel" tabindex="-1" data-task="anderson-head">Anderson head</button>
+          <button id="tab-anderson-side" role="tab" aria-selected="false" aria-controls="task-panel" tabindex="-1" data-task="anderson-side">Anderson side</button>
+          <button id="tab-atx" role="tab" aria-selected="false" aria-controls="task-panel" tabindex="-1" data-task="atx">ATX 20+4-pin</button>
+        </div>
+        <div class="experiment" id="task-panel" role="tabpanel" aria-labelledby="tab-aviation">
+          <div class="experiment-title"><div><span class="trial-label">LeCo evaluation</span><h3 id="task-title">Aviation-connector insertion</h3></div><span class="trace-status" id="trace-status">Media pending</span></div>
+          <div class="experiment-grid">
+            <div class="video-column">
+              <div class="video-stage" id="video-stage">
+                <video id="evaluation-video" playsinline preload="metadata" aria-label="LeCo evaluation video" hidden></video>
+                <div class="video-placeholder" id="video-placeholder"><img id="task-poster" src="assets/images/aviation.png" alt="Aviation-connector task from the paper"><div><span class="pending-mark" aria-hidden="true">▷</span><p id="video-message">Evaluation video pending</p></div></div>
+                <button class="fullscreen-button" id="fullscreen" aria-label="Open video fullscreen" disabled title="Fullscreen">⛶</button>
+              </div>
+              <p class="task-description" id="task-description">Early pose correction avoids jamming; axial motion completes final seating.</p>
+            </div>
+            <div class="trace-column">
+              <div class="trace-toolbar"><span>Contact measurements</span><div class="segmented" role="group" aria-label="Measurement display"><button aria-pressed="true" data-mode="norm">Resultant</button><button aria-pressed="false" data-mode="axes">XYZ</button></div></div>
+              <div class="plot-block"><div class="plot-heading"><h4>Force <span>(N)</span></h4><output id="force-value">—</output></div><div class="plot" id="force-plot"></div></div>
+              <div class="plot-block"><div class="plot-heading"><h4>Torque <span>(N·m)</span></h4><output id="torque-value">—</output></div><div class="plot" id="torque-plot"></div></div>
+              <div class="plot-footer"><span id="plot-legend"><i class="legend-line"></i> Resultant magnitude</span><span>Video time (s)</span></div>
+            </div>
+          </div>
+          <div class="playback-controls">
+            <button class="play-button" id="play" aria-label="Play evaluation video" disabled><span id="play-icon" aria-hidden="true">▶</span></button>
+            <output class="time-display" id="time-display">—:— / —:—</output>
+            <input id="timeline" type="range" min="0" max="1" step="0.01" value="0" disabled aria-label="Video playback time">
+            <label class="speed-control"><span class="sr-only">Playback speed</span><select id="playback-speed" aria-label="Playback speed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label>
+            <label class="loop-control"><input id="loop" type="checkbox">Loop</label>
+          </div>
+          <p class="synchronization-note" id="synchronization-note">Video and synchronized force / torque recordings will be added for this task.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section abstract-section" id="abstract" aria-labelledby="abstract-heading"><div class="reading-width"><p class="eyebrow">The idea</p><h2 id="abstract-heading">Abstract</h2><p id="abstract-text">Policy learning and compliant control offer a promising route to reliable autonomous assembly under pose errors and contact uncertainty. However, combining them does not ensure coordination: the policy may continue pushing against contact while the controller yields, producing sustained loading with limited progress. To address this problem, we propose LeCo (Leverage Compliance), a policy–admittance learning framework that trains a visual policy to leverage fixed admittance for effective insertion with reduced contact loads. A multirate feedback mechanism aggregates high-rate contact-interaction records into policy-transition rewards. An integrated conflict cost then characterizes sustained policy-loading/controller-unloading opposition, while a directional high-force tail cost captures continued-loading events within a transition. Combined with a task-completion reward, these costs encourage the policy to leverage compliance with less unproductive loading. We evaluate LeCo on four real connector-assembly tasks, obtaining an aggregate success rate of 94%. Across tasks, mean successful-trial resultant-force and torque peaks decrease by approximately 30% and 64% relative to the comparison baseline. Reward ablation further shows that adding conflict shaping reduces median successful-trial contact-conditioned conflict density by approximately 53%. These results support integrating multirate policy–admittance execution with interaction-based reward shaping to achieve effective, lower-load insertion.</p></div></section>
+
+    <section class="section method-section" id="method" aria-labelledby="method-heading"><div class="container"><div class="section-heading"><p class="eyebrow">How it works</p><h2 id="method-heading">Learning through policy–admittance interaction</h2><p>Task motion and compliant response contribute to a shared learning objective.</p></div><figure class="method-figure"><img src="assets/images/method.png" alt="LeCo architecture: robot observations feed a 10-Hz visual policy, fixed 100-Hz admittance adjusts execution, and contact interaction provides transition-level rewards." width="1740" height="856" loading="lazy"><figcaption>A 10-Hz visual policy and fixed 100-Hz admittance execute task motion. High-rate contact records provide transition-level learning feedback.</figcaption></figure><div class="method-points"><article><span class="point-number">01</span><h3>Multirate execution</h3><p>The visual policy supplies task motion while fixed admittance continuously adjusts execution using wrench feedback.</p></article><article><span class="point-number">02</span><h3>Interaction-based rewards</h3><p>A conflict integral captures sustained command opposition. A directional tail cost captures brief high-force continued-loading events.</p></article></div></div></section>
+
+    <section class="section results-section" id="results" aria-labelledby="results-heading"><div class="container"><div class="section-heading"><p class="eyebrow">Real-robot evaluation</p><h2 id="results-heading">Effective insertion with lower contact loads</h2></div><div class="results-metrics"><div><strong>94<span>%</span></strong><h3>Aggregate success</h3><p>94 successful trials out of 100<br>across four assembly tasks</p></div><div><strong>≈30<span>%</span></strong><h3>Lower force peaks</h3><p>Across-task reduction in mean<br>successful-trial resultant-force peaks</p></div><div><strong>≈64<span>%</span></strong><h3>Lower torque peaks</h3><p>Across-task reduction in mean<br>successful-trial resultant-torque peaks</p></div></div><p class="results-context">Force and torque reductions are relative to ConRFT. These statistics describe the evaluation reported in the paper.</p><div class="table-scroll"><table><caption>LeCo autonomous evaluation</caption><thead><tr><th scope="col">Assembly task</th><th scope="col">Success</th><th scope="col">Force peak (N)</th><th scope="col">Torque peak (N·m)</th></tr></thead><tbody><tr><th scope="row">Aviation connector</th><td>19 / 20</td><td>7.760 ± 0.807</td><td>0.722 ± 0.147</td></tr><tr><th scope="row">Anderson head</th><td>30 / 30</td><td>6.188 ± 1.309</td><td>0.596 ± 0.172</td></tr><tr><th scope="row">Anderson side</th><td>17 / 20</td><td>7.379 ± 1.691</td><td>0.640 ± 0.151</td></tr><tr><th scope="row">ATX 20+4-pin</th><td>28 / 30</td><td>6.454 ± 0.929</td><td>0.483 ± 0.147</td></tr></tbody></table></div><p class="table-note">Peaks are three-axis resultant magnitudes, reported as mean ± sample standard deviation over successful trials.</p><details class="learning-details"><summary>View the online learning curves <span aria-hidden="true">+</span></summary><figure><img src="assets/images/learning-curves.png" alt="Online learning curves for LeCo, ConRFT and HIL-SERL on the four tasks, showing lateral-force peaks, intervention ratios and autonomous success." width="1545" height="1048" loading="lazy"><figcaption>Rows show recorded XY-force peaks, intervention ratios, and autonomous success. Online time excludes ConRFT offline training.</figcaption></figure></details></div></section>
+  </main>
+  <footer class="footer container"><a class="wordmark" href="#main">LeCo</a><p>Learning to Leverage Compliance</p><a href="mailto:hhdai@nwpu.edu.cn">Contact the corresponding author <span aria-hidden="true">↗</span></a></footer>
+</body>
+</html>
